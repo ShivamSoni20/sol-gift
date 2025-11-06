@@ -2,6 +2,8 @@
 
 Beautiful, modern web interface for the Solana NFT Gift Card system.
 
+> 🔗 **Live Demo**: Coming soon | **Program ID**: `HqFAXUepX3yey78itmbxU5RauYYQaSWnBfAndsxiqVem`
+
 ## Features
 
 - 🎨 **Modern UI** - Built with Next.js 14, React, and TailwindCSS
@@ -93,10 +95,54 @@ npm start
 ## Tech Stack
 
 - **Framework**: Next.js 14 (App Router)
-- **Styling**: TailwindCSS
+- **Styling**: TailwindCSS + shadcn/ui
 - **Icons**: Lucide React
 - **Blockchain**: Solana Web3.js, Anchor
 - **Wallet**: Solana Wallet Adapter
+- **Language**: TypeScript
+
+## Deployment
+
+### Vercel (Recommended)
+
+```bash
+# Install Vercel CLI
+npm i -g vercel
+
+# Deploy
+vercel
+```
+
+### Docker
+
+```bash
+# Build image
+docker build -t solgift-web .
+
+# Run container
+docker run -p 3000:3000 solgift-web
+```
+
+## Troubleshooting
+
+### Wallet Connection Issues
+- Ensure you have a Solana wallet extension installed
+- Check that you're on the correct network (devnet/mainnet)
+- Clear browser cache and reload
+
+### Transaction Failures
+- Verify sufficient SOL for transaction fees
+- Check program is deployed on the selected network
+- Ensure wallet has necessary token accounts
+
+### Build Errors
+- Delete `node_modules` and `.next` folders
+- Run `npm install` again
+- Check Node.js version (18+ required)
+
+## Contributing
+
+See the main [repository README](../../README.md) for contribution guidelines.
 
 ## License
 

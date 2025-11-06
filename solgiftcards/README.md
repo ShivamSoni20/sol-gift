@@ -2,6 +2,10 @@
 
 A decentralized NFT gift card platform built on Solana using Anchor Framework. This system allows users to mint gift cards backed by USDC/SOL, transfer them between wallets, redeem them at merchants, and handle expiry scenarios.
 
+**Program ID**: `HqFAXUepX3yey78itmbxU5RauYYQaSWnBfAndsxiqVem`
+
+> 📖 **Quick Links**: [Web UI](./web/README.md) | [Build Instructions](./BUILD_INSTRUCTIONS.md) | [Contract Verification](./CONTRACT_VERIFICATION.md) | [Workflow Examples](./WORKFLOW_EXAMPLES.md)
+
 ## Features
 
 ### Core Functionality
@@ -485,6 +489,36 @@ MIT
 
 Contributions welcome! Please open an issue or PR.
 
+## Related Documentation
+
+- **[Web Application](./web/README.md)** - Next.js frontend documentation
+- **[Build Instructions](./BUILD_INSTRUCTIONS.md)** - Detailed build and deployment guide
+- **[Contract Verification](./CONTRACT_VERIFICATION.md)** - Security audit and verification details
+- **[Workflow Examples](./WORKFLOW_EXAMPLES.md)** - Complete usage scenarios and examples
+- **[Web Setup](./WEB_SETUP.md)** - Frontend configuration and setup
+
+## Roadmap
+
+### Current Features ✅
+- NFT gift card minting with escrow
+- Transfer between wallets
+- Merchant redemption (full & partial)
+- Expiry management
+- Event emissions
+- Web UI with wallet integration
+
+### Planned Features 🚧
+- Multi-token support (SOL, USDC, custom SPL tokens)
+- Gift card marketplace
+- Batch minting
+- QR code redemption
+- Mobile app
+- Analytics dashboard
+- Gift card templates
+
 ## Support
 
-For questions or issues, please open a GitHub issue.
+For questions or issues:
+- Open a [GitHub Issue](https://github.com/ShivamSoni20/sol-gift/issues)
+- Check existing documentation
+- Review test files for examples
