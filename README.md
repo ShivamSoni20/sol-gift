@@ -6,6 +6,8 @@ A complete decentralized gift card ecosystem built on Solana. Create, transfer, 
 
 SolGift is a full-stack Solana application that revolutionizes gift cards by combining NFT technology with secure escrow mechanisms. The platform enables businesses and individuals to issue digital gift cards that are transferable, redeemable, and backed by real value locked on-chain.
 
+**✨ Latest Update**: Enhanced UI with fully responsive design, modern animations, and improved mobile experience across all devices.
+
 ### Key Features
 
 - **🎨 NFT-Backed Gift Cards** - Each gift card is a unique NFT with metadata
@@ -109,9 +111,12 @@ Open [http://localhost:3000](http://localhost:3000) to view the app.
 
 ### Web Application (Next.js)
 - **Framework**: Next.js 14 (App Router)
-- **Styling**: TailwindCSS + shadcn/ui
+- **Styling**: TailwindCSS + Custom Design System
+- **UI Components**: shadcn/ui inspired components
 - **Wallet**: Solana Wallet Adapter
 - **Icons**: Lucide React
+- **Responsive**: Mobile-first design with breakpoints (sm: 640px, md: 768px, lg: 1024px)
+- **Animations**: Custom CSS animations with smooth transitions
 
 ## 🔐 Security Features
 
@@ -168,12 +173,17 @@ anchor deploy --provider.cluster mainnet-beta
 ## 🌐 Web Features
 
 - **Wallet Connection** - Phantom, Solflare, and more
-- **Gift Card Dashboard** - View all your cards
-- **Mint Interface** - Create new gift cards
-- **Transfer Flow** - Send cards to others
+- **Gift Card Dashboard** - View all your cards with beautiful card layouts
+- **Mint Interface** - Create new gift cards with intuitive forms
+- **Transfer Flow** - Send cards to others seamlessly
 - **Redemption Portal** - Merchant redemption interface
 - **Transaction History** - Track all activities
-- **Responsive Design** - Mobile-friendly UI
+- **Fully Responsive Design** - Optimized for mobile, tablet, and desktop
+- **Modern UI/UX** - Smooth animations, hover effects, and transitions
+- **Mobile Navigation** - Hamburger menu for seamless mobile experience
+- **Touch-Friendly** - Large tap targets and optimized spacing for mobile devices
+- **Custom Animations** - Fade-in, slide-up, and scale effects throughout
+- **Accessible** - ARIA labels and keyboard navigation support
 
 ## 🤝 Contributing
 
