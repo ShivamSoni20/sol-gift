@@ -14,29 +14,29 @@ export function Modal({ isOpen, onClose, title, children }: ModalProps) {
   if (!isOpen) return null;
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center p-4 sm:p-6">
+    <div className="fixed inset-0 z-50 flex items-center justify-center p-3 sm:p-4 md:p-6">
       {/* Backdrop */}
       <div 
-        className="absolute inset-0 bg-black/50 backdrop-blur-sm animate-fadeIn"
+        className="absolute inset-0 bg-black/60 backdrop-blur-sm animate-fadeIn"
         onClick={onClose}
       />
       
       {/* Modal */}
-      <div className="relative bg-white rounded-2xl shadow-2xl w-full max-w-md max-h-[90vh] overflow-y-auto animate-slideUp">
+      <div className="relative bg-white rounded-2xl shadow-2xl w-full max-w-md max-h-[92vh] sm:max-h-[90vh] overflow-y-auto animate-slideUp">
         {/* Header */}
-        <div className="flex items-center justify-between p-4 sm:p-6 border-b sticky top-0 bg-white z-10 rounded-t-2xl">
-          <h2 className="text-xl sm:text-2xl font-bold">{title}</h2>
+        <div className="flex items-center justify-between p-4 sm:p-5 md:p-6 border-b sticky top-0 bg-white/95 backdrop-blur-sm z-10 rounded-t-2xl">
+          <h2 className="text-lg sm:text-xl md:text-2xl font-bold">{title}</h2>
           <button
             onClick={onClose}
-            className="p-2 hover:bg-gray-100 rounded-lg transition flex-shrink-0"
+            className="p-1.5 sm:p-2 hover:bg-gray-100 rounded-lg transition-colors flex-shrink-0"
             aria-label="Close modal"
           >
-            <X className="h-5 w-5" />
+            <X className="h-5 w-5 sm:h-5 sm:w-5" />
           </button>
         </div>
         
         {/* Content */}
-        <div className="p-4 sm:p-6">
+        <div className="p-4 sm:p-5 md:p-6">
           {children}
         </div>
       </div>
