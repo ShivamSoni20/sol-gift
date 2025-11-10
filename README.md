@@ -6,7 +6,7 @@ A complete decentralized gift card ecosystem built on Solana. Create, transfer, 
 
 SolGift is a full-stack Solana application that revolutionizes gift cards by combining NFT technology with secure escrow mechanisms. The platform enables businesses and individuals to issue digital gift cards that are transferable, redeemable, and backed by real value locked on-chain.
 
-**✨ Latest Update**: Enhanced UI with fully responsive design, modern animations, and improved mobile experience across all devices.
+**✨ Latest Update**: Dark mode support with theme toggle, animated WarpBackground on dashboard, and enhanced UI with fully responsive design across all devices.
 
 ### Key Features
 
@@ -115,8 +115,9 @@ Open [http://localhost:3000](http://localhost:3000) to view the app.
 - **UI Components**: shadcn/ui inspired components
 - **Wallet**: Solana Wallet Adapter
 - **Icons**: Lucide React
+- **Theme**: Dark mode with persistent theme toggle
 - **Responsive**: Mobile-first design with breakpoints (sm: 640px, md: 768px, lg: 1024px)
-- **Animations**: Custom CSS animations with smooth transitions
+- **Animations**: Custom CSS animations, WarpBackground starfield effect, smooth transitions
 
 ## 🔐 Security Features
 
@@ -178,11 +179,13 @@ anchor deploy --provider.cluster mainnet-beta
 - **Transfer Flow** - Send cards to others seamlessly
 - **Redemption Portal** - Merchant redemption interface
 - **Transaction History** - Track all activities
+- **Dark Mode** - 🌙 Full dark theme support with persistent toggle (light/dark)
+- **Animated Background** - ✨ WarpBackground starfield effect on dashboard
 - **Fully Responsive Design** - Optimized for mobile, tablet, and desktop
 - **Modern UI/UX** - Smooth animations, hover effects, and transitions
 - **Mobile Navigation** - Hamburger menu for seamless mobile experience
 - **Touch-Friendly** - Large tap targets and optimized spacing for mobile devices
-- **Custom Animations** - Fade-in, slide-up, and scale effects throughout
+- **Custom Animations** - Fade-in, slide-up, scale effects, and warp speed starfield
 - **Accessible** - ARIA labels and keyboard navigation support
 
 ## 🤝 Contributing
