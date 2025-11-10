@@ -6,7 +6,14 @@ A complete decentralized gift card ecosystem built on Solana. Create, transfer, 
 
 SolGift is a full-stack Solana application that revolutionizes gift cards by combining NFT technology with secure escrow mechanisms. The platform enables businesses and individuals to issue digital gift cards that are transferable, redeemable, and backed by real value locked on-chain.
 
-**✨ Latest Update**: Dark mode support with theme toggle, animated WarpBackground on dashboard, and enhanced UI with fully responsive design across all devices.
+**✨ Latest Updates**:
+- ✅ Fixed program ID mismatch - synchronized across all components
+- ✅ Improved IDL structure with complete account type definitions
+- ✅ Unified npm scripts - run from root directory with `npm run dev`
+- ✅ Created comprehensive QUICK_START.md guide
+- ✅ Dark mode support with theme toggle
+- ✅ Animated WarpBackground on dashboard
+- ✅ Fully responsive design across all devices
 
 ### Key Features
 
@@ -34,19 +41,45 @@ sol-gift/
 
 ### Prerequisites
 
-- **Rust** 1.70+
-- **Solana CLI** 1.18+
-- **Anchor** 0.32.1
-- **Node.js** 18+
-- **Yarn** or **npm**
+- **Node.js** 18+ (Required)
+- **Rust** 1.70+ (Optional - only for building smart contracts)
+- **Solana CLI** 1.18+ (Optional - only for deployment)
+- **Anchor** 0.32.1 (Optional - only for smart contract development)
 
-### Installation
+### Installation & Running
+
+**Simple Setup (Recommended)**
 
 ```bash
 # Clone the repository
 git clone https://github.com/ShivamSoni20/sol-gift.git
 cd sol-gift/solgiftcards
 
+# Install dependencies
+npm install
+
+# Start the application (runs from root directory)
+npm run dev
+```
+
+Open [http://localhost:3000](http://localhost:3000) to view the app.
+
+**Alternative Setup (Web directory)**
+
+```bash
+# Navigate to web directory
+cd sol-gift/solgiftcards/web
+
+# Install dependencies
+npm install
+
+# Start development server
+npm run dev
+```
+
+### For Smart Contract Development
+
+```bash
 # Install dependencies
 yarn install
 
@@ -57,23 +90,9 @@ anchor build
 anchor test
 ```
 
-### Run the Web App
-
-```bash
-# Navigate to web directory
-cd web
-
-# Install dependencies
-npm install
-
-# Start development server
-npm run dev
-```
-
-Open [http://localhost:3000](http://localhost:3000) to view the app.
-
 ## 📚 Documentation
 
+- **[Quick Start Guide](./solgiftcards/QUICK_START.md)** - 🚀 Get started in 5 minutes
 - **[Smart Contract Documentation](./solgiftcards/README.md)** - Complete program architecture, API reference, and usage examples
 - **[Web UI Documentation](./solgiftcards/web/README.md)** - Frontend setup and features
 - **[Build Instructions](./solgiftcards/BUILD_INSTRUCTIONS.md)** - Detailed build and deployment guide
@@ -104,10 +123,11 @@ Open [http://localhost:3000](http://localhost:3000) to view the app.
 ## 🏗️ Architecture
 
 ### Smart Contract (Rust/Anchor)
-- **Program ID**: `HqFAXUepX3yey78itmbxU5RauYYQaSWnBfAndsxiqVem`
+- **Program ID**: `8E8wHRStMBYFPGvQNuq1hCgUZF6oWHuqsFKxnbbCGm36`
 - **Framework**: Anchor 0.32.1
 - **Token Standard**: SPL Token + Metaplex
-- **Network**: Localnet/Devnet/Mainnet
+- **Network**: Devnet (ready for Mainnet)
+- **Escrow**: PDA-based secure fund locking
 
 ### Web Application (Next.js)
 - **Framework**: Next.js 14 (App Router)
@@ -208,11 +228,36 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 - **Solana Docs**: [docs.solana.com](https://docs.solana.com)
 - **Anchor Docs**: [anchor-lang.com](https://www.anchor-lang.com)
 
+## 🐛 Troubleshooting
+
+### Common Issues
+
+**Program ID Mismatch Error**
+- Ensure you're using the correct program ID: `8E8wHRStMBYFPGvQNuq1hCgUZF6oWHuqsFKxnbbCGm36`
+- Check that `idl.json` has the correct address field
+- Restart the development server after changes
+
+**Wallet Connection Issues**
+- Make sure you're on Devnet in your wallet settings
+- Clear browser cache and reconnect wallet
+- Try a different wallet adapter (Phantom, Solflare, etc.)
+
+**Transaction Failures**
+- Ensure you have SOL for transaction fees (airdrop on Devnet)
+- Check that you have USDC (Devnet) for minting gift cards
+- Verify the program is deployed on the network you're using
+
+**Build Errors**
+- Run `npm install` in both root and `/web` directories
+- Clear `.next` cache: `rm -rf web/.next`
+- Check Node.js version (18+ required)
+
 ## 💬 Support
 
 For questions, issues, or feature requests:
 - Open a [GitHub Issue](https://github.com/ShivamSoni20/sol-gift/issues)
 - Join our community discussions
+- Check the [Quick Start Guide](./solgiftcards/QUICK_START.md) for setup help
 
 ## 🙏 Acknowledgments
 
