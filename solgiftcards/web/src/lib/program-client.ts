@@ -1,4 +1,4 @@
-import { AnchorProvider, Program, BN } from "@coral-xyz/anchor";
+import { AnchorProvider, Program, BN, web3 } from "@coral-xyz/anchor";
 import { 
   PublicKey, 
   Keypair, 
@@ -6,6 +6,7 @@ import {
   SYSVAR_RENT_PUBKEY,
   Connection,
 } from "@solana/web3.js";
+import * as anchor from "@coral-xyz/anchor";
 import { 
   TOKEN_PROGRAM_ID, 
   ASSOCIATED_TOKEN_PROGRAM_ID,
@@ -179,7 +180,7 @@ export async function mintGiftCardTransaction(
   const expiryTimestamp = Math.floor(Date.now() / 1000) + expiryDays * 24 * 60 * 60;
 
   // Convert amount (USDC has 6 decimals)
-  const amountBN = new BN(amount * 1_000_000);
+  const amountBN = new anchor.BN(amount * 1_000_000);
 
   // Merchant address (using issuer for now)
   const merchantAddress = issuer;
@@ -194,7 +195,7 @@ export async function mintGiftCardTransaction(
 
   // Call the program
   const tx = await (program.methods as any)
-    .mintGiftCard(amountBN, new BN(expiryTimestamp), merchantName, merchantAddress, uri)
+    .mintGiftCard(amountBN, new anchor.BN(expiryTimestamp), merchantName, merchantAddress, uri)
     .accounts({
       issuer,
       nftMint: nftMint.publicKey,
@@ -280,7 +281,7 @@ export async function redeemGiftCardTransaction(
   const escrowTokenAccount = await getAssociatedTokenAddress(paymentMint, giftCardPDA, true);
   const merchantTokenAccount = await getAssociatedTokenAddress(paymentMint, merchant);
 
-  const redeemAmount = amountToRedeem ? new BN(amountToRedeem * 1_000_000) : null;
+  const redeemAmount = amountToRedeem ? new anchor.BN(amountToRedeem * 1_000_000) : null;
 
   console.log("💰 Redeeming gift card...");
   console.log("Amount:", amountToRedeem || "Full balance");
