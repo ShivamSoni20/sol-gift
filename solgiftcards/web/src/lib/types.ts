@@ -1,6 +1,12 @@
 import { PublicKey } from "@solana/web3.js";
 
 export type SolgiftcardsIDL = {
+  address: string;
+  metadata: {
+    name: string;
+    version: string;
+    spec: string;
+  };
   version: "0.1.0";
   name: "solgiftcards";
   instructions: [

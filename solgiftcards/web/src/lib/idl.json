@@ -1,0 +1,109 @@
+{
+  "address": "8E8wHRStMBYFPGvQNuq1hCgUZF6oWHuqsFKxnbbCGm36",
+  "metadata": {
+    "name": "solgiftcards",
+    "version": "0.1.0",
+    "spec": "0.1.0"
+  },
+  "instructions": [
+    {
+      "name": "mintGiftCard",
+      "discriminator": [145, 98, 147, 133, 73, 174, 40, 135],
+      "accounts": [
+        { "name": "issuer", "writable": true, "signer": true },
+        { "name": "nftMint", "writable": true, "signer": true },
+        { "name": "giftCard", "writable": true },
+        { "name": "paymentMint" },
+        { "name": "issuerTokenAccount", "writable": true },
+        { "name": "escrowTokenAccount", "writable": true },
+        { "name": "issuerNftAccount", "writable": true },
+        { "name": "metadata", "writable": true },
+        { "name": "tokenProgram" },
+        { "name": "associatedTokenProgram" },
+        { "name": "systemProgram" },
+        { "name": "rent" }
+      ],
+      "args": [
+        { "name": "amount", "type": "u64" },
+        { "name": "expiryTimestamp", "type": "i64" },
+        { "name": "merchantName", "type": "string" },
+        { "name": "merchantAddress", "type": "pubkey" },
+        { "name": "uri", "type": "string" }
+      ]
+    },
+    {
+      "name": "transferGiftCard",
+      "discriminator": [138, 166, 19, 250, 117, 133, 251, 208],
+      "accounts": [
+        { "name": "currentOwner", "writable": true, "signer": true },
+        { "name": "newOwner" },
+        { "name": "nftMint" },
+        { "name": "giftCard", "writable": true },
+        { "name": "currentOwnerNftAccount", "writable": true },
+        { "name": "newOwnerNftAccount", "writable": true },
+        { "name": "tokenProgram" },
+        { "name": "associatedTokenProgram" },
+        { "name": "systemProgram" }
+      ],
+      "args": []
+    },
+    {
+      "name": "redeemGiftCard",
+      "discriminator": [184, 12, 86, 149, 70, 196, 97, 225],
+      "accounts": [
+        { "name": "merchant", "writable": true, "signer": true },
+        { "name": "giftCard", "writable": true },
+        { "name": "nftMint", "writable": true },
+        { "name": "merchantNftAccount", "writable": true },
+        { "name": "escrowTokenAccount", "writable": true },
+        { "name": "merchantTokenAccount", "writable": true },
+        { "name": "paymentMint" },
+        { "name": "tokenProgram" },
+        { "name": "associatedTokenProgram" },
+        { "name": "systemProgram" }
+      ],
+      "args": [
+        { "name": "amountToRedeem", "type": { "option": "u64" } }
+      ]
+    }
+  ],
+  "accounts": [
+    {
+      "name": "giftCard",
+      "discriminator": [54, 20, 8, 38, 75, 170, 131, 139]
+    }
+  ],
+  "types": [
+    {
+      "name": "giftCard",
+      "type": {
+        "kind": "struct",
+        "fields": [
+          { "name": "issuer", "type": "pubkey" },
+          { "name": "currentOwner", "type": "pubkey" },
+          { "name": "merchant", "type": "pubkey" },
+          { "name": "merchantName", "type": "string" },
+          { "name": "amount", "type": "u64" },
+          { "name": "remainingBalance", "type": "u64" },
+          { "name": "mint", "type": "pubkey" },
+          { "name": "escrowAccount", "type": "pubkey" },
+          { "name": "createdAt", "type": "i64" },
+          { "name": "expiryTimestamp", "type": "i64" },
+          { "name": "status", "type": { "defined": { "name": "giftCardStatus" } } },
+          { "name": "bump", "type": "u8" }
+        ]
+      }
+    },
+    {
+      "name": "giftCardStatus",
+      "type": {
+        "kind": "enum",
+        "variants": [
+          { "name": "active" },
+          { "name": "redeemed" },
+          { "name": "expired" }
+        ]
+      }
+    }
+  ]
+}

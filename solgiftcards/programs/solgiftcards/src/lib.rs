@@ -7,7 +7,7 @@ use anchor_spl::{
 };
 use mpl_token_metadata::instructions::{CreateMetadataAccountV3, CreateMetadataAccountV3InstructionArgs};
 
-declare_id!("HqFAXUepX3yey78itmbxU5RauYYQaSWnBfAndsxiqVem");
+declare_id!("8E8wHRStMBYFPGvQNuq1hCgUZF6oWHuqsFKxnbbCGm36");
 
 #[program]
 pub mod solgiftcards {
@@ -26,6 +26,7 @@ pub mod solgiftcards {
         require!(expiry_timestamp > Clock::get()?.unix_timestamp, GiftCardError::InvalidExpiry);
         require!(merchant_name.len() <= 32, GiftCardError::NameTooLong);
 
+        
         let gift_card = &mut ctx.accounts.gift_card;
         let clock = Clock::get()?;
 

@@ -1,4 +1,4 @@
-import { AnchorProvider, Program, BN, web3 } from "@coral-xyz/anchor";
+import { AnchorProvider, Program, BN, web3, Idl } from "@coral-xyz/anchor";
 import { 
   PublicKey, 
   Keypair, 
@@ -12,10 +12,10 @@ import {
   ASSOCIATED_TOKEN_PROGRAM_ID,
   getAssociatedTokenAddress,
 } from "@solana/spl-token";
-import type { SolgiftcardsIDL } from "./types";
+import IDL_JSON from "./idl.json";
 
 // Program ID from your deployed contract
-export const PROGRAM_ID = new PublicKey("HqFAXUepX3yey78itmbxU5RauYYQaSWnBfAndsxiqVem");
+export const PROGRAM_ID = new PublicKey("8E8wHRStMBYFPGvQNuq1hCgUZF6oWHuqsFKxnbbCGm36");
 
 // Metaplex Token Metadata Program (well-known address)
 export const TOKEN_METADATA_PROGRAM_ID = new PublicKey(
@@ -54,101 +54,8 @@ export function deriveMetadataPDA(mint: PublicKey): [PublicKey, number] {
 /**
  * Get Program Instance
  */
-export function getProgram(provider: AnchorProvider): Program<SolgiftcardsIDL> {
-  const IDL: SolgiftcardsIDL = {
-    version: "0.1.0",
-    name: "solgiftcards",
-    instructions: [
-      {
-        name: "mintGiftCard",
-        accounts: [
-          { name: "issuer", isMut: true, isSigner: true },
-          { name: "nftMint", isMut: true, isSigner: true },
-          { name: "giftCard", isMut: true, isSigner: false },
-          { name: "paymentMint", isMut: false, isSigner: false },
-          { name: "issuerTokenAccount", isMut: true, isSigner: false },
-          { name: "escrowTokenAccount", isMut: true, isSigner: false },
-          { name: "issuerNftAccount", isMut: true, isSigner: false },
-          { name: "metadata", isMut: true, isSigner: false },
-          { name: "tokenProgram", isMut: false, isSigner: false },
-          { name: "associatedTokenProgram", isMut: false, isSigner: false },
-          { name: "systemProgram", isMut: false, isSigner: false },
-          { name: "rent", isMut: false, isSigner: false },
-        ],
-        args: [
-          { name: "amount", type: "u64" },
-          { name: "expiryTimestamp", type: "i64" },
-          { name: "merchantName", type: "string" },
-          { name: "merchantAddress", type: "publicKey" },
-          { name: "uri", type: "string" },
-        ],
-      },
-      {
-        name: "transferGiftCard",
-        accounts: [
-          { name: "currentOwner", isMut: true, isSigner: true },
-          { name: "newOwner", isMut: false, isSigner: false },
-          { name: "nftMint", isMut: false, isSigner: false },
-          { name: "giftCard", isMut: true, isSigner: false },
-          { name: "currentOwnerNftAccount", isMut: true, isSigner: false },
-          { name: "newOwnerNftAccount", isMut: true, isSigner: false },
-          { name: "tokenProgram", isMut: false, isSigner: false },
-          { name: "associatedTokenProgram", isMut: false, isSigner: false },
-          { name: "systemProgram", isMut: false, isSigner: false },
-        ],
-        args: [],
-      },
-      {
-        name: "redeemGiftCard",
-        accounts: [
-          { name: "merchant", isMut: true, isSigner: true },
-          { name: "giftCard", isMut: true, isSigner: false },
-          { name: "nftMint", isMut: true, isSigner: false },
-          { name: "merchantNftAccount", isMut: true, isSigner: false },
-          { name: "escrowTokenAccount", isMut: true, isSigner: false },
-          { name: "merchantTokenAccount", isMut: true, isSigner: false },
-          { name: "paymentMint", isMut: false, isSigner: false },
-          { name: "tokenProgram", isMut: false, isSigner: false },
-          { name: "associatedTokenProgram", isMut: false, isSigner: false },
-          { name: "systemProgram", isMut: false, isSigner: false },
-        ],
-        args: [{ name: "amountToRedeem", type: { option: "u64" } }],
-      },
-    ],
-    accounts: [
-      {
-        name: "GiftCard",
-        type: {
-          kind: "struct",
-          fields: [
-            { name: "issuer", type: "publicKey" },
-            { name: "currentOwner", type: "publicKey" },
-            { name: "merchant", type: "publicKey" },
-            { name: "merchantName", type: "string" },
-            { name: "amount", type: "u64" },
-            { name: "remainingBalance", type: "u64" },
-            { name: "mint", type: "publicKey" },
-            { name: "escrowAccount", type: "publicKey" },
-            { name: "createdAt", type: "i64" },
-            { name: "expiryTimestamp", type: "i64" },
-            { name: "status", type: { defined: "GiftCardStatus" } },
-            { name: "bump", type: "u8" },
-          ],
-        },
-      },
-    ],
-    types: [
-      {
-        name: "GiftCardStatus",
-        type: {
-          kind: "enum",
-          variants: [{ name: "Active" }, { name: "Redeemed" }, { name: "Expired" }],
-        },
-      },
-    ],
-  };
-
-  return new Program(IDL as any, PROGRAM_ID, provider);
+export function getProgram(provider: AnchorProvider): Program {
+  return new Program(IDL_JSON as Idl, provider);
 }
 
 /**

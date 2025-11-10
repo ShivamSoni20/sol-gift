@@ -6,7 +6,7 @@ resolution = true
 skip-lint = false
 
 [programs.localnet]
-solgiftcards = "HqFAXUepX3yey78itmbxU5RauYYQaSWnBfAndsxiqVem"
+solgiftcards = "8E8wHRStMBYFPGvQNuq1hCgUZF6oWHuqsFKxnbbCGm36"
 
 [registry]
 url = "https://api.apr.dev"
