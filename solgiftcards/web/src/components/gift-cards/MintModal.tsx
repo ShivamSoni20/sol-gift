@@ -67,29 +67,29 @@ export function MintModal({ isOpen, onClose, onSuccess }: MintModalProps) {
   return (
     <Modal isOpen={isOpen} onClose={onClose} title="Mint Gift Card">
       <div className="space-y-4 sm:space-y-6">
-        <div className="bg-purple-50 p-3 sm:p-4 rounded-lg flex items-center space-x-3">
-          <Gift className="h-7 w-7 sm:h-8 sm:w-8 text-purple-600 flex-shrink-0" />
+        <div className="bg-purple-50 dark:bg-purple-900/20 p-3 sm:p-4 rounded-lg flex items-center space-x-3">
+          <Gift className="h-7 w-7 sm:h-8 sm:w-8 text-purple-600 dark:text-purple-400 flex-shrink-0" />
           <div>
-            <h3 className="font-semibold text-sm sm:text-base">Create NFT Gift Card</h3>
-            <p className="text-xs sm:text-sm text-gray-600">Backed by real value on Solana</p>
+            <h3 className="font-semibold text-sm sm:text-base dark:text-white">Create NFT Gift Card</h3>
+            <p className="text-xs sm:text-sm text-gray-600 dark:text-gray-300">Backed by real value on Solana</p>
           </div>
         </div>
 
         {/* Amount Input */}
         <div>
-          <label className="block text-sm font-medium mb-2">Amount</label>
+          <label className="block text-sm font-medium mb-2 dark:text-gray-200">Amount</label>
           <div className="flex flex-col sm:flex-row space-y-2 sm:space-y-0 sm:space-x-2">
             <input
               type="number"
               value={amount}
               onChange={(e) => setAmount(e.target.value)}
               placeholder="100"
-              className="flex-1 px-3 sm:px-4 py-2.5 sm:py-3 border-2 border-gray-200 rounded-lg focus:border-purple-500 focus:outline-none text-sm sm:text-base transition-colors"
+              className="flex-1 px-3 sm:px-4 py-2.5 sm:py-3 border-2 border-gray-200 dark:border-gray-600 dark:bg-gray-700 dark:text-white rounded-lg focus:border-purple-500 dark:focus:border-purple-400 focus:outline-none text-sm sm:text-base transition-colors"
             />
             <select
               value={currency}
               onChange={(e) => setCurrency(e.target.value)}
-              className="w-full sm:w-auto px-3 sm:px-4 py-2.5 sm:py-3 border-2 border-gray-200 rounded-lg focus:border-purple-500 focus:outline-none text-sm sm:text-base transition-colors"
+              className="w-full sm:w-auto px-3 sm:px-4 py-2.5 sm:py-3 border-2 border-gray-200 dark:border-gray-600 dark:bg-gray-700 dark:text-white rounded-lg focus:border-purple-500 dark:focus:border-purple-400 focus:outline-none text-sm sm:text-base transition-colors"
             >
               <option value="USDC">USDC</option>
               <option value="SOL">SOL</option>
@@ -99,30 +99,30 @@ export function MintModal({ isOpen, onClose, onSuccess }: MintModalProps) {
 
         {/* Expiry Input */}
         <div>
-          <label className="block text-sm font-medium mb-2">Expiry (Days)</label>
+          <label className="block text-sm font-medium mb-2 dark:text-gray-200">Expiry (Days)</label>
           <input
             type="number"
             value={expiryDays}
             onChange={(e) => setExpiryDays(e.target.value)}
             placeholder="30"
-            className="w-full px-3 sm:px-4 py-2.5 sm:py-3 border-2 border-gray-200 rounded-lg focus:border-purple-500 focus:outline-none text-sm sm:text-base transition-colors"
+            className="w-full px-3 sm:px-4 py-2.5 sm:py-3 border-2 border-gray-200 dark:border-gray-600 dark:bg-gray-700 dark:text-white rounded-lg focus:border-purple-500 dark:focus:border-purple-400 focus:outline-none text-sm sm:text-base transition-colors"
           />
-          <p className="text-xs sm:text-sm text-gray-500 mt-1">Gift card will expire in {expiryDays} days</p>
+          <p className="text-xs sm:text-sm text-gray-500 dark:text-gray-400 mt-1">Gift card will expire in {expiryDays} days</p>
         </div>
 
         {/* Summary */}
-        <div className="bg-gray-50 p-3 sm:p-4 rounded-lg space-y-2">
+        <div className="bg-gray-50 dark:bg-gray-700/50 p-3 sm:p-4 rounded-lg space-y-2">
           <div className="flex justify-between text-sm sm:text-base">
-            <span className="text-gray-600">Value:</span>
-            <span className="font-semibold">{amount || "0"} {currency}</span>
+            <span className="text-gray-600 dark:text-gray-300">Value:</span>
+            <span className="font-semibold dark:text-white">{amount || "0"} {currency}</span>
           </div>
           <div className="flex justify-between text-sm sm:text-base">
-            <span className="text-gray-600">Network Fee:</span>
-            <span className="font-semibold">~0.001 SOL</span>
+            <span className="text-gray-600 dark:text-gray-300">Network Fee:</span>
+            <span className="font-semibold dark:text-white">~0.001 SOL</span>
           </div>
-          <div className="border-t pt-2 flex justify-between text-sm sm:text-base">
-            <span className="font-semibold">Total Cost:</span>
-            <span className="font-bold text-purple-600">{amount || "0"} {currency}</span>
+          <div className="border-t border-gray-200 dark:border-gray-600 pt-2 flex justify-between text-sm sm:text-base">
+            <span className="font-semibold dark:text-white">Total Cost:</span>
+            <span className="font-bold text-purple-600 dark:text-purple-400">{amount || "0"} {currency}</span>
           </div>
         </div>
 
@@ -147,7 +147,7 @@ export function MintModal({ isOpen, onClose, onSuccess }: MintModalProps) {
           <button
             onClick={onClose}
             disabled={loading}
-            className="flex-1 px-4 sm:px-6 py-2.5 sm:py-3 border-2 border-gray-300 rounded-lg text-sm sm:text-base font-semibold hover:bg-gray-50 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+            className="flex-1 px-4 sm:px-6 py-2.5 sm:py-3 border-2 border-gray-300 dark:border-gray-600 dark:text-gray-200 rounded-lg text-sm sm:text-base font-semibold hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
           >
             Cancel
           </button>
