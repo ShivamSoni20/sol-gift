@@ -11,6 +11,7 @@ import { WalletButton } from "@/components/WalletButton";
 import { useGiftCards } from "@/hooks/useGiftCards";
 import { TestConnection } from "./test-connection";
 import { ThemeToggle } from "@/components/ThemeToggle";
+import { WarpBackground } from "@/components/ui/warp-background";
 
 export default function Dashboard() {
   const { publicKey, connected } = useWallet();
@@ -27,7 +28,14 @@ export default function Dashboard() {
   }, [connected, publicKey, fetchGiftCards]);
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-purple-50 via-white to-blue-50 dark:from-gray-900 dark:via-gray-800 dark:to-gray-900 transition-colors duration-200">
+    <div className="min-h-screen relative overflow-hidden">
+      <WarpBackground
+        containerClassName="fixed inset-0 -z-10"
+        colors={["#9333ea", "#3b82f6", "#8b5cf6", "#6366f1", "#a855f7"]}
+        warpSpeed="slow"
+        backgroundGradientClassName="bg-gradient-to-br from-purple-50 via-white to-blue-50 dark:from-gray-900 dark:via-gray-800 dark:to-gray-900"
+      />
+      <div className="relative z-10">
       {/* Navigation */}
       <nav className="border-b border-gray-200 dark:border-gray-700 bg-white/90 dark:bg-gray-900/90 backdrop-blur-md sticky top-0 z-50 shadow-sm">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -192,6 +200,7 @@ export default function Dashboard() {
       <MintModal isOpen={mintModalOpen} onClose={() => setMintModalOpen(false)} />
       <TransferModal isOpen={transferModalOpen} onClose={() => setTransferModalOpen(false)} />
       <RedeemModal isOpen={redeemModalOpen} onClose={() => setRedeemModalOpen(false)} />
+      </div>
     </div>
   );
 }
