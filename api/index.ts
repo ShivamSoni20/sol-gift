@@ -37,67 +37,45 @@ try {
   process.exit(1);
 }
 
-// Configure x402 payment middleware
-const x402Config = paymentMiddleware(
-  {
-    // Mint gift card - charge $0.10 per mint
-    'POST /api/gift-cards/mint': {
-      accepts: [
-        {
-          network: 'solana-devnet',
-          scheme: 'exact',
-          amount: '100000', // 0.1 USDC (6 decimals)
-          token: 'USDC',
-          recipient: PAYMENT_RECIPIENT,
-        },
-      ],
-      description: 'Create a new gift card NFT',
-    },
-
-    // Transfer gift card - charge $0.01 per transfer
-    'POST /api/gift-cards/:id/transfer': {
-      accepts: [
-        {
-          network: 'solana-devnet',
-          scheme: 'exact',
-          amount: '10000', // 0.01 USDC
-          token: 'USDC',
-          recipient: PAYMENT_RECIPIENT,
-        },
-      ],
-      description: 'Transfer gift card to another wallet',
-    },
-
-    // Claim gift card - free for users (no payment required)
-    // We don't add this to x402 config so it remains free
-
-    // Query gift card status - free
-    'GET /api/gift-cards/:id': {
-      accepts: [], // No payment required for queries
-      description: 'Get gift card details',
-    },
-
-    // List user gift cards - charge $0.005 per query
-    'GET /api/gift-cards/user/:wallet': {
-      accepts: [
-        {
-          network: 'solana-devnet',
-          scheme: 'exact',
-          amount: '5000', // 0.005 USDC
-          token: 'USDC',
-          recipient: PAYMENT_RECIPIENT,
-        },
-      ],
-      description: 'List all gift cards for a wallet',
-    },
-  },
-  {
-    facilitatorUrl: process.env.X402_FACILITATOR_URL || 'https://x402.org/facilitator',
-  }
-);
+// Temporarily disabled due to SDK incompatibility (ResourceServer.initialize is not a function)
+// const x402Config = paymentMiddleware(
+//   {
+//     // Pricing configuration
+//     pricing: [
+//       {
+//         route: '/api/gift-cards/mint',
+//         method: 'POST',
+//         scheme: 'exact',
+//         amount: '100000', // $0.10 USDC (6 decimals)
+//         token: 'USDC',
+//         recipient: PAYMENT_RECIPIENT,
+//       },
+//       {
+//         route: '/api/gift-cards/transfer',
+//         method: 'POST',
+//         scheme: 'exact',
+//         amount: '10000', // $0.01 USDC
+//         token: 'USDC',
+//         recipient: PAYMENT_RECIPIENT,
+//       },
+//       {
+//         route: '/api/gift-cards/list',
+//         method: 'GET',
+//         scheme: 'exact',
+//         amount: '5000', // 0.005 USDC
+//         token: 'USDC',
+//         recipient: PAYMENT_RECIPIENT,
+//       },
+//     ],
+//     description: 'List all gift cards for a wallet',
+//   },
+//   {
+//     facilitatorUrl: process.env.X402_FACILITATOR_URL || 'https://x402.org/facilitator',
+//   }
+// );
 
 // Apply x402 middleware to all routes
-app.use(x402Config);
+// app.use(x402Config);
 
 // ============================================================================
 // API Routes
