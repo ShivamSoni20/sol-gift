@@ -7,7 +7,7 @@ use anchor_spl::{
 };
 use mpl_token_metadata::instructions::{CreateMetadataAccountV3, CreateMetadataAccountV3InstructionArgs};
 
-declare_id!("8E8wHRStMBYFPGvQNuq1hCgUZF6oWHuqsFKxnbbCGm36");
+declare_id!("8wdDZQrL1kkxjmxWSg9WoGUDJFqgE4QdvN6QrZtDXtTo");
 
 #[program]
 pub mod solgiftcards {
@@ -75,25 +75,27 @@ pub mod solgiftcards {
             rent: Some(ctx.accounts.rent.key()),
         };
 
-        let create_metadata_args = CreateMetadataAccountV3InstructionArgs {
+        let creators = vec![mpl_token_metadata::types::Creator {
+            address: ctx.accounts.issuer.key(),
+            verified: true,
+            share: 100,
+        }];
+
+        let create_metadata_args = Box::new(CreateMetadataAccountV3InstructionArgs {
             data: mpl_token_metadata::types::DataV2 {
                 name: format!("Gift Card - {}", merchant_name),
                 symbol: "GIFTCARD".to_string(),
                 uri,
                 seller_fee_basis_points: 0,
-                creators: Some(vec![mpl_token_metadata::types::Creator {
-                    address: ctx.accounts.issuer.key(),
-                    verified: true,
-                    share: 100,
-                }]),
+                creators: Some(creators),
                 collection: None,
                 uses: None,
             },
             is_mutable: true,
             collection_details: None,
-        };
+        });
 
-        let create_metadata_instruction = create_metadata_ix.instruction(create_metadata_args);
+        let create_metadata_instruction = create_metadata_ix.instruction(*create_metadata_args);
 
         invoke_signed(
             &create_metadata_instruction,

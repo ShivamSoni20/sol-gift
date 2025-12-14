@@ -17,7 +17,9 @@ app.use(express.json());
 
 // Solana configuration
 const SOLANA_RPC = process.env.SOLANA_RPC || 'https://api.devnet.solana.com';
-const PROGRAM_ID = new PublicKey('8E8wHRStMBYFPGvQNuq1hCgUZF6oWHuqsFKxnbbCGm36');
+const PROGRAM_ID = new PublicKey(
+  process.env.PROGRAM_ID || '8E8wHRStMBYFPGvQNuq1hCgUZF6oWHuqsFKxnbbCGm36'
+);
 
 // Your wallet address that receives x402 payments (Solana base58 address)
 const PAYMENT_RECIPIENT = process.env.PAYMENT_RECIPIENT as string | undefined;
@@ -90,7 +92,7 @@ const x402Config = paymentMiddleware(
     },
   },
   {
-    facilitatorUrl: 'https://x402.org/facilitator',
+    facilitatorUrl: process.env.X402_FACILITATOR_URL || 'https://x402.org/facilitator',
   }
 );
 
