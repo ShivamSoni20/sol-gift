@@ -121,7 +121,7 @@ pub mod solgiftcards {
         Ok(())
     }
 
-    /// Transfer gift card NFT to another wallet
+    /// Transfer gift card NFT to another wallet (for gifting)
     pub fn transfer_gift_card(
         ctx: Context<TransferGiftCard>,
     ) -> Result<()> {
@@ -161,9 +161,85 @@ pub mod solgiftcards {
         Ok(())
     }
 
-    /// Redeem gift card at merchant - transfers funds and burns NFT
-    pub fn redeem_gift_card(
-        ctx: Context<RedeemGiftCard>,
+    /// FIXED: Redeem/claim gift card - anyone with the NFT can claim the funds
+    /// The current owner presents the gift card to claim funds to their wallet
+    pub fn claim_gift_card(
+        ctx: Context<ClaimGiftCard>,
+        amount_to_claim: Option<u64>,
+    ) -> Result<()> {
+        let gift_card = &mut ctx.accounts.gift_card;
+
+        require!(
+            gift_card.status == GiftCardStatus::Active,
+            GiftCardError::GiftCardNotActive
+        );
+
+        require!(
+            Clock::get()?.unix_timestamp < gift_card.expiry_timestamp,
+            GiftCardError::GiftCardExpired
+        );
+
+        // FIXED: Allow ANY current owner to claim, not just the merchant
+        require!(
+            gift_card.current_owner == ctx.accounts.current_owner.key(),
+            GiftCardError::NotCurrentOwner
+        );
+
+        // Determine claim amount
+        let claim_amount = amount_to_claim.unwrap_or(gift_card.remaining_balance);
+        require!(
+            claim_amount > 0 && claim_amount <= gift_card.remaining_balance,
+            GiftCardError::InsufficientBalance
+        );
+
+        // Transfer tokens from escrow to current owner
+        let seeds = &[
+            b"gift_card",
+            gift_card.mint.as_ref(),
+            &[gift_card.bump],
+        ];
+        let signer = &[&seeds[..]];
+
+        let cpi_accounts = Transfer {
+            from: ctx.accounts.escrow_token_account.to_account_info(),
+            to: ctx.accounts.owner_token_account.to_account_info(),
+            authority: gift_card.to_account_info(),
+        };
+        let cpi_program = ctx.accounts.token_program.to_account_info();
+        let cpi_ctx = CpiContext::new_with_signer(cpi_program, cpi_accounts, signer);
+        token::transfer(cpi_ctx, claim_amount)?;
+
+        gift_card.remaining_balance -= claim_amount;
+
+        // If fully claimed, burn the NFT
+        if gift_card.remaining_balance == 0 {
+            let cpi_accounts = Burn {
+                mint: ctx.accounts.nft_mint.to_account_info(),
+                from: ctx.accounts.owner_nft_account.to_account_info(),
+                authority: ctx.accounts.current_owner.to_account_info(),
+            };
+            let cpi_program = ctx.accounts.token_program.to_account_info();
+            let cpi_ctx = CpiContext::new(cpi_program, cpi_accounts);
+            token::burn(cpi_ctx, 1)?;
+
+            gift_card.status = GiftCardStatus::Claimed;
+        }
+
+        emit!(GiftCardClaimed {
+            gift_card: gift_card.key(),
+            claimer: ctx.accounts.current_owner.key(),
+            amount: claim_amount,
+            remaining_balance: gift_card.remaining_balance,
+            nft_mint: gift_card.mint,
+        });
+
+        Ok(())
+    }
+
+    /// NEW: Merchant-specific redemption - merchant can redeem cards presented to them
+    /// This allows merchants to accept gift cards and get the funds
+    pub fn merchant_redeem(
+        ctx: Context<MerchantRedeem>,
         amount_to_redeem: Option<u64>,
     ) -> Result<()> {
         let gift_card = &mut ctx.accounts.gift_card;
@@ -178,7 +254,13 @@ pub mod solgiftcards {
             GiftCardError::GiftCardExpired
         );
 
-        // Verify merchant owns the NFT
+        // Verify this is the designated merchant
+        require!(
+            ctx.accounts.merchant.key() == gift_card.merchant,
+            GiftCardError::UnauthorizedMerchant
+        );
+
+        // Verify merchant owns the NFT (customer transferred it to them)
         require!(
             gift_card.current_owner == gift_card.merchant,
             GiftCardError::NotOwnedByMerchant
@@ -187,7 +269,7 @@ pub mod solgiftcards {
         // Determine redemption amount
         let redeem_amount = amount_to_redeem.unwrap_or(gift_card.remaining_balance);
         require!(
-            redeem_amount <= gift_card.remaining_balance,
+            redeem_amount > 0 && redeem_amount <= gift_card.remaining_balance,
             GiftCardError::InsufficientBalance
         );
 
@@ -423,8 +505,53 @@ pub struct TransferGiftCard<'info> {
     pub system_program: Program<'info, System>,
 }
 
+// FIXED: New account structure for claiming by current owner
 #[derive(Accounts)]
-pub struct RedeemGiftCard<'info> {
+pub struct ClaimGiftCard<'info> {
+    #[account(mut)]
+    pub current_owner: Signer<'info>,
+
+    #[account(
+        mut,
+        seeds = [b"gift_card", nft_mint.key().as_ref()],
+        bump,
+    )]
+    pub gift_card: Account<'info, GiftCard>,
+
+    #[account(mut)]
+    pub nft_mint: InterfaceAccount<'info, Mint>,
+
+    #[account(
+        mut,
+        associated_token::mint = nft_mint,
+        associated_token::authority = current_owner,
+    )]
+    pub owner_nft_account: InterfaceAccount<'info, TokenAccount>,
+
+    #[account(
+        mut,
+        associated_token::mint = payment_mint,
+        associated_token::authority = gift_card,
+    )]
+    pub escrow_token_account: InterfaceAccount<'info, TokenAccount>,
+
+    #[account(
+        mut,
+        associated_token::mint = payment_mint,
+        associated_token::authority = current_owner,
+    )]
+    pub owner_token_account: InterfaceAccount<'info, TokenAccount>,
+
+    pub payment_mint: InterfaceAccount<'info, Mint>,
+
+    pub token_program: Program<'info, Token>,
+    pub associated_token_program: Program<'info, AssociatedToken>,
+    pub system_program: Program<'info, System>,
+}
+
+// NEW: Merchant-specific redemption
+#[derive(Accounts)]
+pub struct MerchantRedeem<'info> {
     #[account(mut)]
     pub merchant: Signer<'info>,
 
@@ -549,7 +676,8 @@ pub struct GiftCard {
 #[derive(AnchorSerialize, AnchorDeserialize, Clone, PartialEq, Eq, InitSpace, Debug)]
 pub enum GiftCardStatus {
     Active,
-    Redeemed,
+    Claimed,    // CHANGED: Redeemed -> Claimed for clarity
+    Redeemed,   // NEW: Merchant-specific redemption
     Expired,
 }
 
@@ -575,6 +703,17 @@ pub struct GiftCardTransferred {
     pub nft_mint: Pubkey,
 }
 
+// NEW: Claimed event for general claiming
+#[event]
+pub struct GiftCardClaimed {
+    pub gift_card: Pubkey,
+    pub claimer: Pubkey,
+    pub amount: u64,
+    pub remaining_balance: u64,
+    pub nft_mint: Pubkey,
+}
+
+// Merchant-specific redemption event
 #[event]
 pub struct GiftCardRedeemed {
     pub gift_card: Pubkey,

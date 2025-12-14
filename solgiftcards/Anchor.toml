@@ -8,11 +8,14 @@ skip-lint = false
 [programs.localnet]
 solgiftcards = "8E8wHRStMBYFPGvQNuq1hCgUZF6oWHuqsFKxnbbCGm36"
 
+[programs.devnet]
+ solgiftcards = "8E8wHRStMBYFPGvQNuq1hCgUZF6oWHuqsFKxnbbCGm36"
+
 [registry]
 url = "https://api.apr.dev"
 
 [provider]
-cluster = "localnet"
+cluster = "devnet"
 wallet = "~/.config/solana/id.json"
 
 [scripts]

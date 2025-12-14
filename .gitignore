@@ -52,3 +52,10 @@ pnpm-lock.yaml
 
 # Build artifacts
 *.tsbuildinfo
+
+# API workspace
+api/.env
+api/node_modules/
+api/dist/
+**/.next/
+solgiftcards/web/.next/

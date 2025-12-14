@@ -1,0 +1,9 @@
+{
+  "name": "sol-gift-root",
+  "private": true,
+  "scripts": {
+    "api:dev": "npm run dev --prefix api",
+    "api:build": "npm run build --prefix api",
+    "api:start": "npm run start --prefix api"
+  }
+}
